@@ -28,4 +28,13 @@ public class StudentH2Service implements StudentRepository {
     public List<Student> getStudents() {
         return db.query("SELECT * FROM STUDENT", new StudentRowMapper());
     }
+
+    @Override
+    public Student addStudent(Student student){
+        db.update("INSERT INTO STUDENT(studentName,gender,standard) VALUES(?,?,?)",
+        student.getStudentName(),student.getGender(),student.getStandard());
+
+        Student savedStudent = db.queryForObject("SELECT * FROM STUDENT ORDER BY studentId DESC LIMIT 1",new StudentRowMapper());
+        return savedStudent;
+    }
 }
